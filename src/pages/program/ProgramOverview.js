@@ -10,20 +10,26 @@ export const ProgramOverviewContext = createContext()
 
 export default function ProgramOverview() {
 
-    const { data, error, isLoading } = useQuery({ queryKey: ['workout_overview'], queryFn: getWorkoutData })
-
-    const [showModal, setShowModal] = useState(false);
     const [createWorkoutDateTime, setCreateWorkoutDateTime] = useState("");
-
-    // Function to toggle the modal display
+    const { data, error, isLoading, refetch } = useQuery({ queryKey: ['workout_overview'], queryFn: getWorkout })
+    const [showModal, setShowModal] = useState(false);
     const toggleModal = () => setShowModal(!showModal);
 
     if (isLoading) return <div>Loading...</div>;
     if (error) return <div>An error occurred: {error.message}</div>;
 
+    function createClickHandler() {
+        putWorkout().then( res => {
+            toggleModal()
+            refetch()
+        }).catch(reason => {
+            alert("error: " + reason)
+        })
+    }
+
+    //create workout elements to display. Done row by row
     let workoutElems = []
     for (let index = 0; index < data.length; index += 2) {
-
         workoutElems.push((
             <div className='row' key={index}>
                 <div className='col-md-2'></div>
@@ -32,11 +38,6 @@ export default function ProgramOverview() {
                 <div className='col-md-2'></div>
             </div>
         ))
-        // workoutElems.push((<>
-        //     {(index && index % 2 === 0) ? <><div className='col-lg-3 col-md-2' key={"div_1_"+workout.uid}></div><div className='col-lg-3 col-md-2' key={"div_2_"+workout.uid}></div></>: ""}
-        //     <div className='col-6 col-md-4 col-lg-3'><ProgramWorkoutItem props={workout} key={workout.uid}/></div>
-        //     </>
-        // ))
     }
     return (
         <>
@@ -51,16 +52,22 @@ export default function ProgramOverview() {
                     date={createWorkoutDateTime} 
                     setDate={setCreateWorkoutDateTime} 
                     toggleModal={toggleModal}
+                    createSubmit={createClickHandler}
                 />
             </ProgramOverviewContext.Provider>
         </>
     );
 }
 
-async function getWorkoutData() {
-    console.log("loading data")
+async function putWorkout(){
+    const { data } = await axios.put('http://localhost:3030/workout');
+    //console.log("workouts: " + JSON.stringify(data))
+    return data;
+}
+
+async function getWorkout() {
     const { data } = await axios.get('http://localhost:3030/workout');
-    console.log("workouts: " + JSON.stringify(data))
+    //console.log("workouts: " + JSON.stringify(data))
     return JSON.parse(data);
 }
 
@@ -84,3 +91,4 @@ const GreenPlusButton = ({ toggleModal }) => {
         </div>
     );
 };
+

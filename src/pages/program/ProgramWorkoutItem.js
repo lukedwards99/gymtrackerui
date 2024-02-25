@@ -1,3 +1,4 @@
+import { Link } from "react-router-dom";
 
 export default function ProgramWorkoutItem({ props }) {
 
@@ -9,8 +10,10 @@ export default function ProgramWorkoutItem({ props }) {
     };
 
     return (
-        <div role="button" className="btn" key="value.uid" style={buttonStyle}>
-            Workout: {props.uid}, Time: {props.workout_time}
-        </div>
+        <Link to={"/workout/" + props.uid}>
+            <div role="button" className="btn" style={buttonStyle}>
+                Workout: {props.uid}, Time: {props.workout_time}
+            </div>
+        </Link>
     )
 }

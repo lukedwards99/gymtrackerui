@@ -1,9 +1,4 @@
-import { useState } from "react";
-
-// Modal Component
-export default function CreateWorkoutModal ({showModal, toggleModal, date, setDate}) {
-  // State to manage modal visibility
-  
+export default function CreateWorkoutModal ({showModal, toggleModal, date, setDate, createSubmit}) {
 
   return (
     <>
@@ -45,7 +40,7 @@ export default function CreateWorkoutModal ({showModal, toggleModal, date, setDa
               {/* Modal Footer */}
               <div className="modal-footer">
                 <button type="button" className="btn btn-secondary" onClick={toggleModal}>Cancel</button>
-                <button type="button" className="btn btn-primary">Confirm</button>
+                <button type="button" className="btn btn-primary" onClick={createSubmit}>Confirm</button>
               </div>
             </div>
           </div>
