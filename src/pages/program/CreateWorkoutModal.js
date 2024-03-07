@@ -1,5 +1,11 @@
-export default function CreateWorkoutModal ({showModal, toggleModal, date, setDate, createSubmit}) {
+import { useNavigate } from "react-router-dom";
+import WorkoutTypeSelector from "../workout/WorkoutTypeSelector";
 
+export default function CreateWorkoutModal ({showModal, toggleModal, date, setDate, createSubmit, setWorkoutType}) {
+  const navigate = useNavigate()
+  function optionsClick(){
+    navigate("/workoutTypeEdit")
+  }
   return (
     <>
 
@@ -23,6 +29,11 @@ export default function CreateWorkoutModal ({showModal, toggleModal, date, setDa
                     <input type="text" className="form-control" id="workoutTitle" />
                   </div>
 
+                  <div className="mb-3">
+                    <label htmlFor="workoutType" className="form-label">Workout Type</label>
+                    <WorkoutTypeSelector setSelectedWorkoutType={setWorkoutType}/>
+                  </div>
+
                   {/* Date Time Picker */}
                   <div className="mb-3">
                     <label htmlFor="dateTimePicker" className="form-label">Date & Time</label>
@@ -39,6 +50,7 @@ export default function CreateWorkoutModal ({showModal, toggleModal, date, setDa
 
               {/* Modal Footer */}
               <div className="modal-footer">
+                <button type="button" className="btn btn-dark" onClick={optionsClick}>Options</button>
                 <button type="button" className="btn btn-secondary" onClick={toggleModal}>Cancel</button>
                 <button type="button" className="btn btn-primary" onClick={createSubmit}>Confirm</button>
               </div>

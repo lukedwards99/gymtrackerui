@@ -13,13 +13,14 @@ export default function ProgramOverview() {
     const [createWorkoutDateTime, setCreateWorkoutDateTime] = useState("");
     const { data, error, isLoading, refetch } = useQuery({ queryKey: ['workout_overview'], queryFn: getWorkout })
     const [showModal, setShowModal] = useState(false);
+    const [createWorkoutType, setCreateWorkoutType] = useState("")
     const toggleModal = () => setShowModal(!showModal);
 
     if (isLoading) return <div>Loading...</div>;
     if (error) return <div>An error occurred: {error.message}</div>;
 
     function createClickHandler() {
-        putWorkout().then( res => {
+        putWorkout().then(res => {
             toggleModal()
             refetch()
         }).catch(reason => {
@@ -47,22 +48,37 @@ export default function ProgramOverview() {
                     <GreenPlusButton toggleModal={toggleModal} />
                     {workoutElems}
                 </div>
-                <CreateWorkoutModal 
-                    showModal={showModal} 
-                    date={createWorkoutDateTime} 
-                    setDate={setCreateWorkoutDateTime} 
+                <CreateWorkoutModal
+                    showModal={showModal}
+                    date={createWorkoutDateTime}
+                    setDate={setCreateWorkoutDateTime}
                     toggleModal={toggleModal}
                     createSubmit={createClickHandler}
+                    setWorkoutType={setCreateWorkoutType}
                 />
             </ProgramOverviewContext.Provider>
         </>
     );
 }
 
-async function putWorkout(){
-    const { data } = await axios.put('http://localhost:3030/workout');
-    //console.log("workouts: " + JSON.stringify(data))
-    return data;
+async function putWorkout() {
+
+    const options = {
+        method: 'PUT',
+        url: 'http://localhost:3030/workout/',
+        data: {
+            workout_time: '2023-01-01T15:00:00.000Z',
+            workout_title: 'Test Workout',
+            workouttype_id: 1
+        }
+    };
+
+    try {
+        const { data } = await axios.request(options);
+        console.log(data);
+    } catch (error) {
+        console.error(error);
+    }
 }
 
 async function getWorkout() {
