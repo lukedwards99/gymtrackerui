@@ -67,8 +67,8 @@ async function putWorkout(){
 
 async function getWorkout() {
     const { data } = await axios.get('http://localhost:3030/workout');
-    //console.log("workouts: " + JSON.stringify(data))
-    return JSON.parse(data);
+    console.log("workouts: " + JSON.stringify(data))
+    return data;
 }
 
 const GreenPlusButton = ({ toggleModal }) => {

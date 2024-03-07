@@ -12,7 +12,7 @@ export default function ProgramWorkoutItem({ props }) {
     return (
         <Link to={"/workout/" + props.uid}>
             <div role="button" className="btn" style={buttonStyle}>
-                Workout: {props.uid}, Time: {props.workout_time}
+                Workout: {props.title}, Time: {props.workout_time}
             </div>
         </Link>
     )
