@@ -30,7 +30,6 @@ export default function WorkoutTypeSelector({setSelectedWorkoutType}) {
     return (
         <div>
             {inputField}
-            <EditButton />
         </div>
     )
 }
@@ -38,7 +37,7 @@ export default function WorkoutTypeSelector({setSelectedWorkoutType}) {
 
 
 async function getWorkoutTypes() {
-    const options = { method: 'GET', url: 'http://localhost:3030/workout/type/' };
+    const options = { method: 'GET', url: 'http://localhost:3030/workout/type/active' };
 
     try {
         const { data } = await axios.request(options);
@@ -49,5 +48,3 @@ async function getWorkoutTypes() {
         return false
     }
 }
-
-function EditButton(){}

@@ -10,23 +10,12 @@ export const ProgramOverviewContext = createContext()
 
 export default function ProgramOverview() {
 
-    const [createWorkoutDateTime, setCreateWorkoutDateTime] = useState("");
     const { data, error, isLoading, refetch } = useQuery({ queryKey: ['workout_overview'], queryFn: getWorkout })
     const [showModal, setShowModal] = useState(false);
-    const [createWorkoutType, setCreateWorkoutType] = useState("")
     const toggleModal = () => setShowModal(!showModal);
 
     if (isLoading) return <div>Loading...</div>;
     if (error) return <div>An error occurred: {error.message}</div>;
-
-    function createClickHandler() {
-        putWorkout().then(res => {
-            toggleModal()
-            refetch()
-        }).catch(reason => {
-            alert("error: " + reason)
-        })
-    }
 
     //create workout elements to display. Done row by row
     let workoutElems = []
@@ -50,36 +39,14 @@ export default function ProgramOverview() {
                 </div>
                 <CreateWorkoutModal
                     showModal={showModal}
-                    date={createWorkoutDateTime}
-                    setDate={setCreateWorkoutDateTime}
                     toggleModal={toggleModal}
-                    createSubmit={createClickHandler}
-                    setWorkoutType={setCreateWorkoutType}
+                    refetch={refetch}
                 />
             </ProgramOverviewContext.Provider>
         </>
     );
 }
 
-async function putWorkout() {
-
-    const options = {
-        method: 'PUT',
-        url: 'http://localhost:3030/workout/',
-        data: {
-            workout_time: '2023-01-01T15:00:00.000Z',
-            workout_title: 'Test Workout',
-            workouttype_id: 1
-        }
-    };
-
-    try {
-        const { data } = await axios.request(options);
-        console.log(data);
-    } catch (error) {
-        console.error(error);
-    }
-}
 
 async function getWorkout() {
     const { data } = await axios.get('http://localhost:3030/workout');
@@ -89,18 +56,10 @@ async function getWorkout() {
 
 const GreenPlusButton = ({ toggleModal }) => {
 
-    //const {toggleModal} = useContext(ProgramOverviewContext)
-
-    const buttonStyle = {
-        backgroundColor: '#0c8259', // Bootstrap's success color
-        borderColor: '#086343',
-        color: 'white',
-    };
-
     return (
         <div className="row justify-content-center">
             <div className="col-12 col-md-8 col-lg-6">
-                <button type="button" className="btn w-100 " style={buttonStyle} onClick={toggleModal}>
+                <button type="button" className="btn w-100 btn-primary" onClick={toggleModal}>
                     <FontAwesomeIcon icon={faPlus} />
                 </button>
             </div>

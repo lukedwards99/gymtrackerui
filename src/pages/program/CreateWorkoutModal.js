@@ -1,11 +1,30 @@
 import { useNavigate } from "react-router-dom";
+import { useState } from "react";
 import WorkoutTypeSelector from "../workout/WorkoutTypeSelector";
+import axios from "axios";
 
-export default function CreateWorkoutModal ({showModal, toggleModal, date, setDate, createSubmit, setWorkoutType}) {
+export default function CreateWorkoutModal ({showModal, toggleModal, refetch}) {
+  const [workoutType, setWorkoutType] = useState("")
+  const [workoutTitle, setWorkoutTitle] = useState("")
+  const [date, setDate] = useState("");
   const navigate = useNavigate()
+
   function optionsClick(){
     navigate("/workoutTypeEdit")
   }
+
+  function createClickHandler() {
+      putWorkout(date, workoutTitle, workoutType).then(res => {
+          setDate("")
+          setWorkoutType(null)
+          setWorkoutTitle("")
+          toggleModal()
+          refetch()
+      }).catch(reason => {
+          alert("error: " + reason)
+      })
+  }
+
   return (
     <>
 
@@ -26,7 +45,7 @@ export default function CreateWorkoutModal ({showModal, toggleModal, date, setDa
                   {/* Workout Title */}
                   <div className="mb-3">
                     <label htmlFor="workoutTitle" className="form-label">Workout Title</label>
-                    <input type="text" className="form-control" id="workoutTitle" />
+                    <input type="text" className="form-control" id="workoutTitle" value={workoutTitle} onChange={(e)=>{setWorkoutTitle(e.target.value)}}/>
                   </div>
 
                   <div className="mb-3">
@@ -52,7 +71,7 @@ export default function CreateWorkoutModal ({showModal, toggleModal, date, setDa
               <div className="modal-footer">
                 <button type="button" className="btn btn-dark" onClick={optionsClick}>Options</button>
                 <button type="button" className="btn btn-secondary" onClick={toggleModal}>Cancel</button>
-                <button type="button" className="btn btn-primary" onClick={createSubmit}>Confirm</button>
+                <button type="button" className="btn btn-primary" onClick={createClickHandler}>Confirm</button>
               </div>
             </div>
           </div>
@@ -64,3 +83,26 @@ export default function CreateWorkoutModal ({showModal, toggleModal, date, setDa
     </>
   );
 };
+
+async function putWorkout(workoutTime, workoutTitle, workoutTypeId) {
+
+    const options = {
+        method: 'PUT',
+        url: 'http://localhost:3030/workout/',
+        data: {
+            workout_time: workoutTime, //'2023-01-01T15:00:00.000Z',
+            workout_title: workoutTitle,
+            workouttype_id: workoutTypeId
+        }
+    };
+
+    alert(JSON.stringify(options))
+
+    try {
+        const { data } = await axios.request(options);
+        console.log(data);
+    } catch (error) {
+        console.error(error);
+        alert(JSON.stringify(error))
+    }
+}
