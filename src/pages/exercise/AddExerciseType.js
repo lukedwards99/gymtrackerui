@@ -1,32 +1,32 @@
 import axios from "axios"
 import { useState } from "react"
 
-function AddWorkoutType({refetch}) {
+function AddExerciseType({refetch}) {
 
-    const [newDayName, setNewDayName] = useState("")
+    const [exerciseName, setExerciseName] = useState("")
     function addClickHandler(e){
-        putWorkoutType(newDayName).then(()=>{
-            setNewDayName("")
+        putExerciseType(exerciseName).then(()=>{
+            setExerciseName("")
             refetch()
         })
     }
 
     return (
         <div className="input-group w-100">
-            <label className="input-group-text" htmlFor="newWorkoutDayInput">Add Day</label>
-            <input id="newWorkoutDayInput" className="form-control" value={newDayName} onChange={(e)=>{setNewDayName(e.target.value)}} />
+            <label className="input-group-text" htmlFor="newWorkoutDayInput">Add Exercise</label>
+            <input id="newWorkoutDayInput" className="form-control" value={exerciseName} onChange={(e)=>{setExerciseName(e.target.value)}} />
             <button className="btn btn-primary" onClick={addClickHandler}>Add</button>
         </div>
     )
 }
 
-export default AddWorkoutType
+export default AddExerciseType
 
-async function putWorkoutType(day){
+async function putExerciseType(day){
 
     const options = {
       method: 'PUT',
-      url: 'http://localhost:3030/workout/type',
+      url: 'http://localhost:3030/exercise/type',
       data: {name: day}
     };
     

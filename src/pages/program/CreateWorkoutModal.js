@@ -81,7 +81,7 @@ export default function CreateWorkoutModal ({showModal, toggleModal, refetch}) {
       {/* Modal Backdrop */}
       {showModal && <div className="modal-backdrop show"></div>}
     </>
-  );
+  )
 };
 
 async function putWorkout(workoutTime, workoutTitle, workoutTypeId) {
@@ -94,7 +94,7 @@ async function putWorkout(workoutTime, workoutTitle, workoutTypeId) {
             workout_title: workoutTitle,
             workouttype_id: workoutTypeId
         }
-    };
+    }
 
     alert(JSON.stringify(options))
 

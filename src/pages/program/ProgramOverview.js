@@ -2,11 +2,9 @@ import { useQuery } from '@tanstack/react-query'
 import { useState, useContext, createContext } from 'react';
 import axios from 'axios';
 import ProgramWorkoutItem from './ProgramWorkoutItem';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faPlus } from '@fortawesome/free-solid-svg-icons'
 import CreateWorkoutModal from './CreateWorkoutModal';
+import GreenPlusButton from '../common/GreenPlusButton';
 
-export const ProgramOverviewContext = createContext()
 
 export default function ProgramOverview() {
 
@@ -31,18 +29,20 @@ export default function ProgramOverview() {
     }
     return (
         <>
-            <ProgramOverviewContext.Provider value={{ toggleModal }} >
-                <h1>Workouts</h1>
-                <div className="container">
-                    <GreenPlusButton toggleModal={toggleModal} />
-                    {workoutElems}
+            <h1>Workouts</h1>
+            <div className="container">
+                <div className="row justify-content-center">
+                    <div className="col-12 col-md-8 col-lg-6">
+                        <GreenPlusButton onClickEvent={toggleModal} />
+                    </div>
                 </div>
-                <CreateWorkoutModal
-                    showModal={showModal}
-                    toggleModal={toggleModal}
-                    refetch={refetch}
-                />
-            </ProgramOverviewContext.Provider>
+                {workoutElems}
+            </div>
+            <CreateWorkoutModal
+                showModal={showModal}
+                toggleModal={toggleModal}
+                refetch={refetch}
+            />
         </>
     );
 }
@@ -53,17 +53,3 @@ async function getWorkout() {
     console.log("workouts: " + JSON.stringify(data))
     return data;
 }
-
-const GreenPlusButton = ({ toggleModal }) => {
-
-    return (
-        <div className="row justify-content-center">
-            <div className="col-12 col-md-8 col-lg-6">
-                <button type="button" className="btn w-100 btn-primary" onClick={toggleModal}>
-                    <FontAwesomeIcon icon={faPlus} />
-                </button>
-            </div>
-        </div>
-    );
-};
-
