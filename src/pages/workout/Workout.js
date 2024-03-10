@@ -25,6 +25,8 @@ export default function Workout() {
         return data;
     }
 
+    data.exercises.sort((a,b) => a.order - b.order)
+
     async function deleteWorkout() {
         const options = {
             method: 'DELETE',

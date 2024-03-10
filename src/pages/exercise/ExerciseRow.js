@@ -29,9 +29,26 @@ function ExerciseRow({ exercise, refetch }) {
         }
     }
 
+    async function moveExercise(direction){
+        const options = {
+            method: 'POST',
+            url: 'http://localhost:3030/exerciseselection/'+direction,
+            data: { exercise_selection_id: exercise.uid }
+        }
+
+        try {
+            const { data } = await axios.request(options)
+            console.log(data)
+            refetch()
+        } catch (error) {
+            console.error(error)
+            alert(JSON.stringify(error))
+        } 
+    }
+
     return (
         <div className="row border border-2 border-secondary m-1 mb-3">
-            <div className="col-3 bg-secondary-subtle ">{exercise.name}</div>
+            <div className="col-3 bg-secondary-subtle ">{exercise.name} {exercise.uid}</div>
             <div className="col-2 bg-primary-subtle ">{exercise.reps}</div>
             <div className="col-3 bg-secondary-subtle ">{exercise.simulationScore}</div>
             <div className="col-3 bg-primary-subtle ">{exercise.difficultyScore}</div>
@@ -43,7 +60,7 @@ function ExerciseRow({ exercise, refetch }) {
             <div className={isCollapseOpen ? 'collapse show' : 'collapse'}>
                 <div className="row justify-content-between m-2">
                     <div className="col-2">
-                        <button className="btn btn-secondary btn-sm">
+                        <button className="btn btn-secondary btn-sm" onClick={()=>moveExercise("up")}>
                             <FontAwesomeIcon icon={faArrowUp} />
                         </button>
                     </div>
@@ -53,7 +70,7 @@ function ExerciseRow({ exercise, refetch }) {
                         </button>
                     </div>
                     <div className="col-2">
-                        <button className="btn btn-secondary btn-sm">
+                        <button className="btn btn-secondary btn-sm" onClick={()=>moveExercise("down")}>
                             <FontAwesomeIcon icon={faArrowDown} />
                         </button>
                     </div>
