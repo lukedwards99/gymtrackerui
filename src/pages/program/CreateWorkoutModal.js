@@ -3,26 +3,27 @@ import { useState } from "react";
 import WorkoutTypeSelector from "../workout/WorkoutTypeSelector";
 import axios from "axios";
 
-export default function CreateWorkoutModal ({showModal, toggleModal, refetch}) {
+export default function CreateWorkoutModal({ showModal, toggleModal, refetch }) {
   const [workoutType, setWorkoutType] = useState("")
   const [workoutTitle, setWorkoutTitle] = useState("")
   const [date, setDate] = useState("");
+  const [dayNum, setDayNum] = useState(0);
   const navigate = useNavigate()
 
-  function optionsClick(){
+  function optionsClick() {
     navigate("/workoutTypeEdit")
   }
 
   function createClickHandler() {
-      putWorkout(date, workoutTitle, workoutType).then(res => {
-          setDate("")
-          setWorkoutType(null)
-          setWorkoutTitle("")
-          toggleModal()
-          refetch()
-      }).catch(reason => {
-          alert("error: " + reason)
-      })
+    putWorkout(date, workoutTitle, workoutType, dayNum).then(res => {
+      setDate("")
+      setWorkoutType(null)
+      setWorkoutTitle("")
+      toggleModal()
+      refetch()
+    }).catch(reason => {
+      alert("error: " + reason)
+    })
   }
 
   return (
@@ -42,26 +43,36 @@ export default function CreateWorkoutModal ({showModal, toggleModal, refetch}) {
               {/* Modal Body */}
               <div className="modal-body">
                 <form>
-                  {/* Workout Title */}
                   <div className="mb-3">
-                    <label htmlFor="workoutTitle" className="form-label">Workout Title</label>
-                    <input type="text" className="form-control" id="workoutTitle" value={workoutTitle} onChange={(e)=>{setWorkoutTitle(e.target.value)}}/>
+                    <label htmlFor="workoutType" className="form-label">Workout Type</label>
+                    <WorkoutTypeSelector setSelectedWorkoutType={setWorkoutType} />
                   </div>
 
                   <div className="mb-3">
-                    <label htmlFor="workoutType" className="form-label">Workout Type</label>
-                    <WorkoutTypeSelector setSelectedWorkoutType={setWorkoutType}/>
+                    <label htmlFor="dayNumInput" className="form-label">Day Number:</label>
+                    <input
+                      type="number"
+                      className="form-control"
+                      id="dayNumInput"
+                      value={dayNum}
+                      onChange={(e) => setDayNum(e.target.value)}
+                    />
+                  </div>
+
+                  <div className="mb-3">
+                    <label htmlFor="workoutTitle" className="form-label">Workout Title</label>
+                    <input type="text" className="form-control" id="workoutTitle" value={workoutTitle} onChange={(e) => { setWorkoutTitle(e.target.value) }} />
                   </div>
 
                   {/* Date Time Picker */}
                   <div className="mb-3">
                     <label htmlFor="dateTimePicker" className="form-label">Date & Time</label>
-                    <input 
-                      type="datetime-local" 
-                      className="form-control" 
-                      id="dateTimePicker" 
-                      value={date} 
-                      onChange={(e) => setDate(e.target.value)} 
+                    <input
+                      type="datetime-local"
+                      className="form-control"
+                      id="dateTimePicker"
+                      value={date}
+                      onChange={(e) => setDate(e.target.value)}
                     />
                   </div>
                 </form>
@@ -84,25 +95,26 @@ export default function CreateWorkoutModal ({showModal, toggleModal, refetch}) {
   )
 };
 
-async function putWorkout(workoutTime, workoutTitle, workoutTypeId) {
+async function putWorkout(workoutTime, workoutTitle, workoutTypeId, dayNum) {
 
-    const options = {
-        method: 'PUT',
-        url: 'http://localhost:3030/workout/',
-        data: {
-            workout_time: workoutTime, //'2023-01-01T15:00:00.000Z',
-            workout_title: workoutTitle,
-            workouttype_id: workoutTypeId
-        }
+  const options = {
+    method: 'PUT',
+    url: 'http://localhost:3030/workout/',
+    data: {
+      workout_time: workoutTime, //'2023-01-01T15:00:00.000Z',
+      workout_title: workoutTitle,
+      workouttype_id: workoutTypeId,
+      day_number: dayNum
     }
+  }
 
-    alert(JSON.stringify(options))
+  alert(JSON.stringify(options))
 
-    try {
-        const { data } = await axios.request(options);
-        console.log(data);
-    } catch (error) {
-        console.error(error);
-        alert(JSON.stringify(error))
-    }
+  try {
+    const { data } = await axios.request(options);
+    console.log(data);
+  } catch (error) {
+    console.error(error);
+    alert(JSON.stringify(error))
+  }
 }

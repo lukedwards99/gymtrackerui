@@ -7,6 +7,7 @@ import ExerciseRow from "../exercise/ExerciseRow";
 import GreenPlusButton from "../common/GreenPlusButton";
 import { useState } from "react";
 import AddExerciseModal from "../exercise/AddExerciseModal";
+import EditWorkoutDetails from "./EditWorkoutDetails";
 let workoutIdParam = null
 
 export default function Workout() {
@@ -27,23 +28,6 @@ export default function Workout() {
 
     data.exercises.sort((a,b) => a.order - b.order)
 
-    async function deleteWorkout() {
-        const options = {
-            method: 'DELETE',
-            url: 'http://localhost:3030/workout/',
-            data: { workout_id: workoutId }
-        };
-
-        try {
-            const { data } = await axios.request(options);
-            alert(JSON.stringify(data));
-            navigate('/', { replace: true })
-        } catch (error) {
-            alert(error);
-        }
-    }
-
-    //const workoutData = data.
 
     return (
         <>
@@ -70,16 +54,12 @@ export default function Workout() {
                     )
                 }))}
                 <div className="d-flex justify-content-center ">
-                    <div className="w-50">
+                    <div className="w-50 mb-3">
                         <GreenPlusButton onClickEvent={toggleModal} />
                     </div>
                 </div>
 
-                <div className="row justify-content-center ">
-                    <div className="col-12 col-lg-4">
-                        <button className="btn btn-danger " onClick={deleteWorkout}>Delete Workout</button>
-                    </div>
-                </div>
+               <EditWorkoutDetails workoutId={workoutId}/> 
             </div>
             <AddExerciseModal
                 showModal={showModal}
