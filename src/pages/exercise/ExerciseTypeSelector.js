@@ -18,7 +18,7 @@ export default function ExerciseTypeSelector({setSelectedExerciseType}) {
         inputField = <input className="form-control" type="text" disabled placeholder="Error Fetching WorkoutTypes"></input>
     }else{
         inputField = (
-            <select className="form-select" onChange={handleClickEvent}>
+            <select className="form-select" id="exerciseType" onChange={handleClickEvent}>
                 <option></option>
                 {data.map((workoutType) => {
                     return <option value={workoutType.uid} key={workoutType.uid}>{workoutType.category_name}</option>
@@ -28,9 +28,9 @@ export default function ExerciseTypeSelector({setSelectedExerciseType}) {
     }
 
     return (
-        <div>
+        <>
             {inputField}
-        </div>
+        </>
     )
 }
 

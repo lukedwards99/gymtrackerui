@@ -2,12 +2,12 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faInfoCircle, faArrowUp, faArrowDown, faTrash } from "@fortawesome/free-solid-svg-icons";
 import React, { useState } from 'react';
 import axios from 'axios';
-import { useParams } from "react-router-dom";
+//import { useParams } from "react-router-dom";
 
 function ExerciseRow({ exercise, refetch }) {
     const [isCollapseOpen, setIsCollapseOpen] = useState(false);
     const [isDelCollapseOpen, setIsDelCollapseOpen] = useState(false);
-    const { id: workoutId } = useParams();
+    //const { id: workoutId } = useParams();
 
     const toggleMainCollapse = () => setIsCollapseOpen(!isCollapseOpen);
     const toggleDeleteCollapse = () => setIsDelCollapseOpen(!isDelCollapseOpen);
