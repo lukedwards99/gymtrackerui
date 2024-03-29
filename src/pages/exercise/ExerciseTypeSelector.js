@@ -41,7 +41,7 @@ async function getExerciseTypes() {
 
     try {
         const { data } = await axios.request(options);
-        console.log(data);
+        // console.log(data);
         return data
     } catch (error) {
         console.error(error);

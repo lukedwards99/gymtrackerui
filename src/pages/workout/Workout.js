@@ -16,7 +16,7 @@ export default function Workout() {
 
     async function getWorkoutById() {
         const { data } = await axios.get(`http://localhost:3030/workout/${workoutId}`);
-        console.log("workouts: " + JSON.stringify(data))
+        // console.log("workouts: " + JSON.stringify(data))
         return data.workoutData;
     }
 
