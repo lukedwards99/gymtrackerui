@@ -1,10 +1,9 @@
 import axios from "axios"
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faInfoCircle, faArrowUp, faArrowDown, faTrash, faAdd } from "@fortawesome/free-solid-svg-icons";
+import { faArrowUp, faArrowDown, faTrash, faAdd } from "@fortawesome/free-solid-svg-icons";
 import { ConfirmModal } from "../common/ConfimModal";
 import { useState } from "react"
-import AddSetCollapse from "../set/AddSetCollapse";
-import DisplaySets from "../set/DisplaySets";
+import SetCollapse from "../set/SetCollapse";
 
 function DisplayExercise({ exercise, refetch }) {
     console.log(exercise)
@@ -80,7 +79,7 @@ function DisplayExercise({ exercise, refetch }) {
             </div>
 
 
-            <AddSetCollapse 
+            <SetCollapse 
                 refetch={refetch} 
                 exercise_selection_id={exercise.workout_selection_id} 
                 showCollapse={showCollapse} 
